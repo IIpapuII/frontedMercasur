@@ -858,7 +858,7 @@ export default {
       this.loading = true; // Activa spinner de envío
       try {
         let response;
-        const apiUrl = "http://127.0.0.1:8000/api/clientes/"; // URL base
+        const apiUrl = "http://145.223.74.117:8000/api/clientes/"; // URL base
 
         if (this.ClienteExiste) {
           console.log(`Actualizando cliente: ${this.numeroDocumento}`);

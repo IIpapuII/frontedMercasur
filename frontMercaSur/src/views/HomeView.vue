@@ -70,7 +70,7 @@ const solicitarUbicacion = () => {
 // Carga las zonas permitidas desde la API
 const obtenerZonasPermitidas = async () => {
   try {
-    const response = await axios.get('http://127.0.0.1:8000/api/zonas-permitidas/')
+    const response = await axios.get('http://145.223.74.117:8000/api/zonas-permitidas/')
     zonasPermitidas.value = response.data
     solicitarUbicacion()
   } catch (error) {
