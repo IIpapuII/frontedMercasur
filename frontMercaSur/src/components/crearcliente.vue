@@ -1,3 +1,4 @@
+
 <template>
   <main class="container mt-2">
     <div v-if="globalError" class="alert alert-danger mt-3" role="alert">
@@ -177,18 +178,24 @@
                   required
                 />
               </div>
-              <div class="col-md-6">
-                <label for="barrio" class="form-label">Barrio</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="barrio"
-                  v-model="barrio"
-                  @input="convertToUppercase('barrio')"
-                  placeholder="Ej: La Riviera"
-                  required
-                />
-              </div>
+                <div class="col-md-6">
+                  <label for="barrio" class="form-label">Barrio</label>
+                  <select
+                    id="barrio"
+                    class="form-select"
+                    v-model="barrio"
+                    required
+                  >
+                    <option disabled value="">Seleccione un barrio</option>
+                    <option
+                      v-for="item in barrios"
+                      :key="item.nombre"
+                      :value="item.nombre"
+                    >
+                      {{ item.nombre }}
+                    </option>
+                  </select>
+                </div>
               <div class="col-md-6">
                 <label for="ciudadList" class="form-label"
                   >Ciudad o Municipio</label
@@ -330,14 +337,20 @@
                       > política de tratamiento de datos</a
                     >.
                 </div>
+              <small
+                v-if="!politica"
+                class="text-danger"
+              >
+                * Debes aceptar la política de tratamiento de datos para poder registrarte.
+              </small>
               </div>
-              <div class="col-md-6" v-if="firmaStatus">
-                <label class="form-label d-block">Firma:</label>
-                <SignaturePad ref="firmaComponent" />
-                <div v-if="showSignatureError" class="text-danger mt-1 small">
-                  Por favor, proporcione su firma.
+                <div class="col-md-6" v-if="firmaStatus">
+                  <label class="form-label d-block">Firma:</label>
+                  <SignaturePad ref="firmaComponent" />
+                  <div v-if="showSignatureError" class="text-danger mt-1 small">
+                    Por favor, proporcione su firma.
+                  </div>
                 </div>
-              </div>
             </div>
 
             <div class="row mt-4">
@@ -510,9 +523,26 @@ export default {
       errorDocumento: false,
       showSignatureError: false, // Error específico de firma vacía
       globalError: null, // Mensaje de error general (opcional)
+      barrios: []
     };
   },
+  mounted() {
+    // Cargar barrios desde la API al montar el componente
+    this.loadBarrios();
+  },
   methods: {
+    // --- Cargar Barrios ---
+    async loadBarrios() {
+      try {
+        const response = await axios.get(
+          "http://127.0.0.1:8000/api/barrios/"
+        );
+        this.barrios = response.data;
+      } catch (error) {
+        console.error("Error al cargar barrios:", error);
+        this.globalError = "No se pudo cargar la lista de barrios.";
+      }
+    },
     // --- Utilitarios ---
     convertToUppercase(field) {
       // Evita error si el campo es null o undefined brevemente
@@ -654,7 +684,7 @@ export default {
       this.celular = "";
       this.tipoVia = "";
       this.direccion = "";
-      this.barrio = "";
+      this.barrio = ""; // Resetea el ID del barrio
       this.ciudad = "";
       this.mascota = "";
       this.otraMascota = "";
