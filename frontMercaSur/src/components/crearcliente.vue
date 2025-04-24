@@ -474,6 +474,7 @@ import axios from "axios";
 import SignaturePad from "./signatured.vue"; // Corregido nombre y ruta
 import tratamiento from "./tratamiento.vue"; // Asumiendo que existe
 import tipo_via from "./tipovia.vue"; // Asumiendo que existe
+import api from '@/services/api.js'
 
 export default {
   // Registro de componentes
@@ -534,8 +535,8 @@ export default {
     // --- Cargar Barrios ---
     async loadBarrios() {
       try {
-        const response = await axios.get(
-          "http://127.0.0.1:8000/api/barrios/"
+        const response = await api.get(
+          "/barrios/"
         );
         this.barrios = response.data;
       } catch (error) {
@@ -630,8 +631,8 @@ export default {
       this.globalError = null; // Limpia errores previos
 
       try {
-        const response = await axios.get(
-          "https://aceitera.cubocloud.com:8000/api/clientes/",
+        const response = await api.get(
+          "/clientes/",
           {
             params: { numero_documento: this.numeroDocumento },
           }
@@ -888,18 +889,18 @@ export default {
       this.loading = true; // Activa spinner de envío
       try {
         let response;
-        const apiUrl = "https://aceitera.cubocloud.com:8000/api/clientes/"; // URL base
+        const apiUrl = "/clientes/"; // URL base
 
         if (this.ClienteExiste) {
           console.log(`Actualizando cliente: ${this.numeroDocumento}`);
-          response = await axios.put(
+          response = await api.put(
             `${apiUrl}${this.numeroDocumento}/`,
             clienteData
           );
           alert("Datos actualizados correctamente.");
         } else {
           console.log("Registrando nuevo cliente...");
-          response = await axios.post(apiUrl, clienteData);
+          response = await api.post(apiUrl, clienteData);
           alert("Cliente registrado exitosamente.");
         }
         console.log("Respuesta del backend:", response.data);

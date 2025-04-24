@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import api from '@/services/api.js'
 import crearcliente from '@/components/crearcliente.vue'
 
 // Estados
@@ -70,7 +70,7 @@ const solicitarUbicacion = () => {
 // Carga las zonas permitidas desde la API
 const obtenerZonasPermitidas = async () => {
   try {
-    const response = await axios.get('https://aceitera.cubocloud.com:8000/api/zonas-permitidas/')
+    const response = await api.get('/zonas-permitidas/')
     zonasPermitidas.value = response.data
     solicitarUbicacion()
   } catch (error) {

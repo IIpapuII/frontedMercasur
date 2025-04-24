@@ -41,8 +41,8 @@
                             Acceder en forma gratuita a sus datos personales que hayan sido objeto de Tratamiento.
                         </li>
                         <li>
-                            Autorizo para que la información proveniente de Grupo Fexvad SAS sea suministrada a cualquier hora y día de la semana <input class="form-check-input" type="checkbox" v-model="autsemana" required/> o deseo que me envíen la información en los horarios de lunes
-                            a sábado de 08:00 a.m. a 08:00 p.m. <input class="form-check-input" type="checkbox" v-model="autfecha" required/>.
+                            Autorizo para que la información proveniente de Grupo Fexvad SAS sea suministrada a cualquier hora y día de la semana o deseo que me envíen la información en los horarios de lunes
+                            a sábado de 08:00 a.m. a 08:00 p.m.
                         </li>
                         <ul>
                             <li>
