@@ -341,7 +341,7 @@
                 v-if="!politica"
                 class="text-danger"
               >
-                * Debes aceptar la política de tratamiento de datos para poder registrarte.
+                *  Debes consultar la política de tratamiento de datos y aceptarla para poder registrarte .
               </small>
               </div>
                 <div class="col-md-6" v-if="firmaStatus">
