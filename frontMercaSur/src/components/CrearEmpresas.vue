@@ -118,7 +118,7 @@
               <div class="col-md-3">
                             <label for="mascota" class="form-label">Genero</label>
                             <select class="form-select" v-model="sexo" id="sexo" required>
-                                <option disabled value="">Selecciona una opción</option>
+                                <option sdisabled value="">Selecciona una opción</option>
                                 <option value="MUJER">Mujer</option>
                                 <option value="HOMBRE">Hombre</option>
                                 <option value="NO APLICA">No Aplica</option>
@@ -889,7 +889,7 @@ export default {
         longitud: location.longitude,
         latitud: location.latitude,
         ip_usuario: ip,
-        tipocliente: "Colaborador", // O determinar dinámicamente
+        tipocliente: "Empresa", // O determinar dinámicamente
         firma_base64: signatureBase64, // Contendrá null o el base64
         genero: this.sexo,
       };

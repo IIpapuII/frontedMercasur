@@ -98,7 +98,7 @@
                   :disabled="ClienteExiste"
                 />
               </div>
-              <div class="col-md-6">
+              <div class="col-md-3">
                 <label for="fecha-nacimiento" class="form-label"
                   >Fecha Nacimiento</label
                 >
@@ -115,6 +115,15 @@
                   Debes tener al menos 18 años.
                 </div>
               </div>
+              <div class="col-md-3">
+                            <label for="mascota" class="form-label">Genero</label>
+                            <select class="form-select" v-model="sexo" id="sexo" required>
+                                <option selected disabled>Selecciona una opción</option>
+                                <option value="MUJER">Mujer</option>
+                                <option value="HOMBRE">Hombre</option>
+                                <option value="NO APLICA">No Aplica</option>
+                            </select>
+                  </div>
               <div class="col-md-6">
                 <label for="correo" class="form-label"
                   >Correo Electrónico</label
@@ -227,12 +236,12 @@
                   <option selected disabled value="">
                     Selecciona una opción
                   </option>
-                  <option value="perro">Perro</option>
-                  <option value="gato">Gato</option>
-                  <option value="otro">Otro</option>
-                  <option value="ninguna">Ninguna</option>
+                  <option value="PERRO">Perro</option>
+                  <option value="GATO">Gato</option>
+                  <option value="OTROS">Otro</option>
+                  <option value="NO TIENE">Ninguna</option>
                 </select>
-                <div class="mt-2" v-if="mascota === 'OTRO'">
+                <div class="mt-2" v-if="mascota === 'OTROS'">
                   <label for="otra-mascota" class="form-label"
                     >¿Qué mascota tienes?</label
                   >
@@ -501,6 +510,7 @@ export default {
       ciudad: "",
       mascota: "",
       otraMascota: "",
+      sexo: "",
       preferencias: {
         // Inicializados en false
         email: false,
@@ -860,9 +870,9 @@ export default {
         ciudad: this.ciudad,
         // Lógica mejorada para mascota
         mascota:
-          this.mascota === "OTRO"
+          this.mascota === "OTROS"
             ? this.otraMascota.toUpperCase()
-            : this.mascota === "NINGUNA"
+            : this.mascota === "NO TIENE"
             ? null
             : this.mascota,
         // Preferencias directamente
@@ -881,6 +891,7 @@ export default {
         ip_usuario: ip,
         tipocliente: "Cliente", // O determinar dinámicamente
         firma_base64: signatureBase64, // Contendrá null o el base64
+        genero: this.sexo,
       };
 
       console.log("Datos listos para enviar:", clienteData);
