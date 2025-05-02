@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: 'https://notificaciones.mercasur.com.co:9180/api',
   headers: {
     'Content-Type': 'application/json'
   }

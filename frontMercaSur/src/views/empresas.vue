@@ -112,8 +112,6 @@ onMounted(() => {
       Activar ubicación
     </button>
   </div>
-
-  <!-- Mostrar componente solo si ubicación válida y dentro de la zona -->
   <div v-if="ubicacionActiva && dentroZona">
     <crearempresas />
   </div>

@@ -255,9 +255,9 @@ onMounted(() => {
       </div>
     </div>
   </div>
-  <section class="container mt-4" v-if="!cargando && ubicacionActiva && dentroZona">
+  <div  v-if="!cargando && ubicacionActiva && dentroZona">
   <empleado />
-</section>
+  </div>
 </template>
 
 <style scoped>
