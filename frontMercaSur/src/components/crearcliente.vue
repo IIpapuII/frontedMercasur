@@ -227,7 +227,7 @@
             </div>
 
             <div class="row mt-3 g-3">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label for="mascota" class="form-label">¿Tienes mascota?</label>
                 <select
                   class="form-select"
@@ -257,7 +257,7 @@
                   />
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label class="form-label d-block mb-2"
                   >¿Cómo prefieres recibir información?</label
                 >
@@ -324,6 +324,21 @@
                   >
                 </div>
               </div>
+
+                <div class="col-md-4">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="notificacionCorreoCheck"
+                      v-model="correoNotificacion"
+                    />
+                    <label class="form-check-label" for="notificacionCorreoCheck">
+                      ¿Quieres recibir un correo de confirmación por esta acción?
+                    </label>
+                  </div>
+                </div>
+              
             </div>
 
             <div class="row mt-3 align-items-center">
@@ -532,7 +547,8 @@ export default {
       errorDocumento: false,
       showSignatureError: false,
       globalError: null,
-      barrios: [], // Array para las opciones
+      barrios: [],
+      correoNotificacion: false // Array para las opciones
     };
   },
   computed: {
@@ -715,6 +731,7 @@ export default {
       if (this.$refs.firmaComponent) {
         this.$refs.firmaComponent.clearCanvas();
       }
+      this.correoNotificacion = false;
     },
     async handleSubmit() {
       this.globalError = null;
@@ -818,6 +835,7 @@ export default {
         tipocliente: "Cliente",
         firma_base64: signatureBase64,
         genero: this.sexo,
+        correo_notificacion: this.correoNotificacion,
       };
 
       this.loading = true;
