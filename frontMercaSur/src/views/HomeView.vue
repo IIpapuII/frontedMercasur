@@ -2,6 +2,9 @@
 import { ref, onMounted } from 'vue'
 import api from '@/services/api.js'
 import crearcliente from '@/components/crearcliente.vue'
+import '@/assets/facebook.png'
+import '@/assets/instagram.png'
+import '@/assets/logo.png'
 
 // Estados
 const ubicacionActiva = ref(false)
