@@ -596,10 +596,14 @@ export default {
     async loadBarrios() {
       try {
         const response = await api.get("/barrios/");
-        this.barrios = response.data.map((barrio, index) => ({
+        this.barrios = response.data
+          .map((barrio, index) => ({
             ...barrio,
-            id: barrio.id || index 
-        }));
+            id: barrio.id || index
+          }))
+          .sort((a, b) =>
+            a.nombre.localeCompare(b.nombre, 'es', { sensitivity: 'base' })
+          );
       } catch (error) {
         console.error("Error al cargar barrios:", error);
         this.globalError = "No se pudo cargar la lista de barrios.";
