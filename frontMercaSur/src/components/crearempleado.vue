@@ -4,6 +4,17 @@
       {{ globalError }}
     </div>
 
+    <div v-if="mostrarMensajeCliente">
+      <div v-if="mensajeClienteExiste" class="alert alert-success mt-3" role="alert">
+        {{ mensajeClienteExiste }}
+        <button class="btn btn-sm btn-success ms-2" @click="procederConActualizacion">Sí, actualizar datos</button>
+        <button class="btn btn-sm btn-secondary ms-2" @click="cancelarActualizacion">No, ingresar otro documento</button>
+      </div>
+      <div v-if="mensajeClienteNoExiste" class="alert alert-success mt-3" role="alert">
+        {{ mensajeClienteNoExiste }}
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-body">
         <form @submit.prevent="handleSubmit">
@@ -21,7 +32,7 @@
                   aria-label="Número de Documento"
                   v-model.trim="numeroDocumento"
                   @blur="checkClienteExistente"
-                  :disabled="ClienteExiste || loading"
+                  :disabled="ClienteExiste || loading || mostrarMensajeCliente" 
                   required
                   pattern="\d{8,10}"
                   title="Debe tener entre 8 y 10 dígitos numéricos."
@@ -67,7 +78,7 @@
                   class="form-control"
                   v-model="segundoApellido"
                   @input="convertToUppercase('segundoApellido')"
-                  :disabled="ClienteExiste"
+                  :disabled="ClienteExiste "
                 />
               </div>
               <div class="col-md-6">
@@ -80,7 +91,7 @@
                   class="form-control"
                   v-model="primerNombre"
                   @input="convertToUppercase('primerNombre')"
-                  :disabled="ClienteExiste"
+                  :disabled="ClienteExiste "
                   required
                 />
               </div>
@@ -94,7 +105,7 @@
                   class="form-control"
                   v-model="segundoNombre"
                   @input="convertToUppercase('segundoNombre')"
-                  :disabled="ClienteExiste"
+                  :disabled="ClienteExiste "
                 />
               </div>
               <div class="col-md-3">
@@ -116,7 +127,7 @@
               </div>
               <div class="col-md-3">
                 <label for="sexo" class="form-label">Genero</label>
-                <select class="form-select" v-model="sexo" id="sexo" required>
+                <select class="form-select" v-model="sexo" id="sexo" :disabled="ClienteExiste && !permitirActualizacionDatos" required>
                   <option disabled value="">Selecciona una opción</option>
                   <option value="MUJER">Mujer</option>
                   <option value="HOMBRE">Hombre</option>
@@ -162,7 +173,7 @@
                   v-model="telefono"
                 />
               </div>
-              <div class="col-md-3">
+              <div class="col-md-2">
                 <label for="tipo_via" class="form-label">Tipo de vía</label>
                 <select
                   class="form-select"
@@ -174,7 +185,7 @@
                   <tipo_via />
                 </select>
               </div>
-              <div class="col-md-9">
+              <div class="col-md-5">
                 <label for="direccion" class="form-label">Dirección</label>
                 <input
                   type="text"
@@ -185,6 +196,16 @@
                   placeholder="Ej: CL 45B # 23-10"
                   required
                 />
+              </div>
+              <div class="col-md-5">
+                <label for="punto_compra" class="form-label">Indique, por favor, el punto de compra de su preferencia:</label>
+                <select id="punto_compra" name="punto_compra" class="form-select" v-model="puntoCompra" required>
+                    <option value="">Seleccione una opción</option>
+                    <option value="CALDAS">CALDAS</option>
+                    <option value="CENTRO">CENTRO</option>
+                    <option value="SOTOMAYOR">SOTOMAYOR</option>
+                    <option value="CABECERA">CABECERA</option>
+                </select>
               </div>
               <div class="col-md-6">
                  <label for="barrio-multiselect" class="form-label">Barrio</label>
@@ -227,7 +248,7 @@
             </div>
 
             <div class="row mt-3 g-3">
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label for="mascota" class="form-label">¿Tienes mascota?</label>
                 <select
                   class="form-select"
@@ -257,7 +278,7 @@
                   />
                 </div>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label class="form-label d-block mb-2"
                   >¿Cómo prefieres recibir información?</label
                 >
@@ -322,8 +343,28 @@
                   <label class="form-check-label" for="ningunaCheck"
                     >Ninguna</label
                   >
+                </div> 
+                <div style="text-align: justify;">
+                  <small class="form-text mt-2">
+                La información proporcionada será utilizada exclusivamente para procesos de fidelización, marketing y demás actividades contempladas en nuestras políticas de tratamiento de datos personales, en cumplimiento del modelo y la normativa vigente.
+                </small>
                 </div>
               </div>
+
+                <div class="col-md-4">
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      id="notificacionCorreoCheck"
+                      v-model="correoNotificacion"
+                    />
+                    <label class="form-check-label" for="notificacionCorreoCheck">
+                      ¿Deseas recibir un correo electrónico de confirmación sobre tu registro en nuestra base de datos?
+                    </label>
+                  </div>
+                </div>
+              
             </div>
 
             <div class="row mt-3 align-items-center">
@@ -335,21 +376,20 @@
                     id="politicaCheck"
                     required
                     :checked="politica"
-                    @change.prevent
-                    disabled
+                    @change.prevent 
+                    disabled 
                   />
                   <label class="form-check-label" for="politicaCheck">
-                    He leído y acepto la
+                    He leído y acepto la  
                   </label>
                   <a
                     href="#"
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal"
-                    >política de tratamiento de datos</a
+                    > política de tratamiento de datos</a
                   >.
                 </div>
-                <small v-if="!politica" class="text-danger">
-                  * Debes consultar la política de tratamiento de datos y
+                <small v-if="!politica && formactive" class="text-danger"> * Debes consultar la política de tratamiento de datos y
                   aceptarla para poder registrarte .
                 </small>
               </div>
@@ -483,7 +523,7 @@ import SignaturePad from "./signatured.vue";
 import tratamiento from "./tratamiento.vue";
 import tipo_via from "./tipovia.vue";
 import api from "@/services/api.js";
-import Multiselect from 'vue-multiselect'; // Importar vue-multiselect
+import Multiselect from 'vue-multiselect';
 import 'vue-multiselect/dist/vue-multiselect.css';
 
 export default {
@@ -491,7 +531,7 @@ export default {
     SignaturePad,
     tratamiento,
     tipo_via,
-    Multiselect, // Registrar vue-multiselect
+    Multiselect,
   },
   data() {
     return {
@@ -506,8 +546,7 @@ export default {
       celular: "",
       tipoVia: "",
       direccion: "",
-      // barrio: "", // Ya no se usa directamente
-      barrioSeleccionadoObj: null, // Modelo para vue-multiselect (objeto)
+      barrioSeleccionadoObj: null,
       ciudad: "",
       mascota: "",
       otraMascota: "",
@@ -532,12 +571,19 @@ export default {
       errorDocumento: false,
       showSignatureError: false,
       globalError: null,
-      barrios: [], // Array para las opciones
+      barrios: [],
+      correoNotificacion: false,
+      puntoCompra: "",
+
+      // Nuevas propiedades para mensajes
+      mensajeClienteExiste: "",
+      mensajeClienteNoExiste: "",
+      mostrarMensajeCliente: false,
+      clienteDataTemporal: null, // Para guardar temporalmente los datos del cliente existente
+      permitirActualizacionDatos: false, // Controla si los campos se habilitan para actualización
     };
   },
   computed: {
-      // Propiedad computada para obtener solo el nombre del barrio
-      // Útil si el backend espera solo el string del nombre
       barrioNombre() {
           return this.barrioSeleccionadoObj ? this.barrioSeleccionadoObj.nombre : null;
       }
@@ -549,10 +595,9 @@ export default {
     async loadBarrios() {
       try {
         const response = await api.get("/barrios/");
-        // Asegurarse que cada barrio tenga un 'id' único para track-by
         this.barrios = response.data.map((barrio, index) => ({
             ...barrio,
-            id: barrio.id || index // Asigna un id si no viene o usa el índice
+            id: barrio.id || index 
         }));
       } catch (error) {
         console.error("Error al cargar barrios:", error);
@@ -586,8 +631,12 @@ export default {
     },
     ConfirmarTrantamiento() {
       this.politica = true;
-      this.tarjeta = true;
-      this.firmaStatus = true;
+      this.tarjeta = true; 
+      if (this.ClienteExiste && !this.permitirActualizacionDatos) { // Si el cliente existe pero no ha confirmado actualizar, no activar firma aún
+          this.firmaStatus = false;
+      } else {
+          this.firmaStatus = true; // Activar firma para nuevos o para actualización confirmada
+      }
     },
     ConfirmarFidelizacion() {
       this.fidelizacion = true;
@@ -620,59 +669,109 @@ export default {
         }
       }
     },
+
     async checkClienteExistente() {
       if (!this.validateDocument()) return;
       this.loading = true;
       this.formactive = false;
       this.ClienteExiste = false;
       this.globalError = null;
+      this.mensajeClienteExiste = "";
+      this.mensajeClienteNoExiste = "";
+      this.mostrarMensajeCliente = false;
+      this.clienteDataTemporal = null;
+      this.permitirActualizacionDatos = false;
+
+
       try {
         const response = await api.get("/clientes/", {
           params: { numero_documento: this.numeroDocumento },
         });
         if (response.data.existe) {
-          const cliente = response.data.cliente;
-          this.primerApellido = cliente.primer_apellido || "";
-          this.segundoApellido = cliente.segundo_apellido || "";
-          this.primerNombre = cliente.primer_nombre || "";
-          this.segundoNombre = cliente.segundo_nombre || "";
-          this.fechaNacimiento = cliente.fecha_nacimiento || "";
-          this.correo = cliente.correo || "";
-          this.telefono = cliente.telefono || "";
-          this.celular = cliente.celular || "";
-          this.tipoVia = cliente.tipo_via || "";
-          this.direccion = cliente.direccion || "";
-          // Encuentra el objeto barrio completo para el v-model de multiselect
-          this.barrioSeleccionadoObj = this.barrios.find(b => b.nombre === cliente.barrio) || null;
-          this.ciudad = cliente.ciudad || "";
-          this.mascota = cliente.mascota || "";
-          this.sexo = cliente.genero || "";
-          this.preferencias.email = cliente.preferencias_email || false;
-          this.preferencias.whatsapp = cliente.preferencias_whatsapp || false;
-          this.preferencias.sms = cliente.preferencias_sms || false;
-          this.preferencias.redesSociales = cliente.preferencias_redes_sociales || false;
-          this.preferencias.llamada = cliente.preferencias_llamada || false;
-          this.preferencias.ninguna = cliente.preferencias_ninguna || false;
-          this.politica = cliente.acepto_politica || false;
-          this.fidelizacion = cliente.fidelizacion || false;
-          this.ClienteExiste = true;
-          this.firmaStatus = false;
+          this.clienteDataTemporal = response.data.cliente;
+          this.mensajeClienteExiste = `El colaborador con documento ${this.numeroDocumento} ya existe en nuestra base de datos. ¿Desea actualizar la información?`;
+          this.mostrarMensajeCliente = true;
+          // No activar el formulario ni marcar ClienteExiste todavía. Esperar confirmación.
         } else {
-          this.resetPartialForm();
+          this.mensajeClienteNoExiste = `El colaborador con documento ${this.numeroDocumento} no fue encontrado. Se habilitará el formulario para que pueda registrarse.`;
+          this.mostrarMensajeCliente = true;
+          this.resetPartialForm(); // Limpia datos previos por si acaso
           this.ClienteExiste = false;
-          this.politica = false;
+          this.politica = false; // Reiniciar política para nuevo cliente
           this.fidelizacion = false;
-          this.firmaStatus = false;
+          this.firmaStatus = false; // Asegurarse que la firma no esté activa para nuevo
+          this.formactive = true; // Activar formulario para nuevo registro
+          // Esperar un momento para que el usuario lea el mensaje antes de ocultarlo
+          setTimeout(() => {
+             this.mostrarMensajeCliente = false;
+             this.mensajeClienteNoExiste = "";
+          }, 4000); // Ocultar después de 4 segundos
         }
-        this.formactive = true;
       } catch (error) {
         console.error("Error al buscar el cliente:", error);
         this.globalError = "Error al verificar el documento. Intente más tarde.";
         this.formactive = false;
+        this.mostrarMensajeCliente = false;
       } finally {
         this.loading = false;
       }
     },
+
+    procederConActualizacion() {
+        this.mostrarMensajeCliente = false;
+        this.mensajeClienteExiste = "";
+        if (this.clienteDataTemporal) {
+            const cliente = this.clienteDataTemporal;
+            this.primerApellido = cliente.primer_apellido || "";
+            this.segundoApellido = cliente.segundo_apellido || "";
+            this.primerNombre = cliente.primer_nombre || "";
+            this.segundoNombre = cliente.segundo_nombre || "";
+            this.fechaNacimiento = cliente.fecha_nacimiento || "";
+            this.correo = cliente.correo || "";
+            this.telefono = cliente.telefono || "";
+            this.celular = cliente.celular || "";
+            this.tipoVia = cliente.tipo_via || "";
+            this.direccion = cliente.direccion || "";
+            this.barrioSeleccionadoObj = this.barrios.find(b => b.nombre === cliente.barrio) || null;
+            this.ciudad = cliente.ciudad || "";
+            this.mascota = cliente.mascota || "";
+            this.sexo = cliente.genero || "";
+            this.preferencias.email = cliente.preferencias_email || false;
+            this.preferencias.whatsapp = cliente.preferencias_whatsapp || false;
+            this.preferencias.sms = cliente.preferencias_sms || false;
+            this.preferencias.redesSociales = cliente.preferencias_redes_sociales || false;
+            this.preferencias.llamada = cliente.preferencias_llamada || false;
+            this.preferencias.ninguna = cliente.preferencias_ninguna || false;
+            this.politica = cliente.acepto_politica || false; // Cargar estado de política
+            this.fidelizacion = cliente.fidelizacion || false;
+            this.puntoCompra = cliente.punto_compra || "";
+            this.correoNotificacion = cliente.correo_notificacion || false;
+
+            this.ClienteExiste = true;
+            this.permitirActualizacionDatos = true; // Permite editar campos que estaban deshabilitados
+            this.firmaStatus = false; // Para actualización, la firma no es obligatoria a menos que se cambie la política
+                                     // O si quieres requerirla siempre para actualización, ponla en true si politica es true.
+                                     // Por ahora, la firma se activará si abren el modal de políticas.
+            this.formactive = true;
+        }
+        this.clienteDataTemporal = null; // Limpiar datos temporales
+    },
+
+    cancelarActualizacion() {
+        this.mostrarMensajeCliente = false;
+        this.mensajeClienteExiste = "";
+        this.numeroDocumento = ""; // Limpiar el campo de documento para que ingrese uno nuevo
+        this.resetPartialForm();
+        this.ClienteExiste = false;
+        this.formactive = false;
+        this.clienteDataTemporal = null;
+        this.permitirActualizacionDatos = false;
+        this.politica = false;
+        this.firmaStatus = false;
+        // Opcionalmente, puedes recargar la página:
+        // window.location.reload();
+    },
+
     resetPartialForm() {
       this.primerApellido = "";
       this.segundoApellido = "";
@@ -684,7 +783,7 @@ export default {
       this.celular = "";
       this.tipoVia = "";
       this.direccion = "";
-      this.barrioSeleccionadoObj = null; // Resetea v-model de multiselect
+      this.barrioSeleccionadoObj = null; 
       this.ciudad = "";
       this.mascota = "";
       this.otraMascota = "";
@@ -697,6 +796,9 @@ export default {
         llamada: false,
         ninguna: false,
       };
+      this.puntoCompra = "";
+      // No resetees 'politica', 'fidelizacion', 'ClienteExiste', 'firmaStatus' aquí
+      // porque su estado depende de la lógica de checkClienteExistente o el flujo del modal
     },
     resetForm() {
       this.resetPartialForm();
@@ -715,6 +817,14 @@ export default {
       if (this.$refs.firmaComponent) {
         this.$refs.firmaComponent.clearCanvas();
       }
+      this.correoNotificacion = false;
+      this.puntoCompra = "";
+      this.mostrarMensajeCliente = false;
+      this.mensajeClienteExiste = "";
+      this.mensajeClienteNoExiste = "";
+      this.clienteDataTemporal = null;
+      this.permitirActualizacionDatos = false;
+
     },
     async handleSubmit() {
       this.globalError = null;
@@ -729,15 +839,24 @@ export default {
         window.scrollTo(0, 0);
         return;
       }
-      if (!this.politica) {
+      
+      // Solo requerir aceptación de política si el formulario está activo y es relevante
+      if (this.formactive && !this.politica) {
         this.globalError = "Debe aceptar la política de tratamiento de datos para continuar.";
+        // Verificar si el modal está abierto, si no, abrirlo o dar un indicio más claro.
+        // Esto podría ser más robusto, por ejemplo, mostrando el modal si no se ha aceptado.
+        const modalElement = this.$refs.policyModalRef;
+        const modalInstance = bootstrap.Modal.getInstance(modalElement);
+        if (!modalInstance || !modalElement.classList.contains('show')) {
+            // Si el modal no está visible, quizá quieras mostrarlo
+            // new bootstrap.Modal(modalElement).show();
+        }
         window.scrollTo(0, 0);
         return;
       }
-       // Validar que se haya seleccionado un barrio
+
       if (!this.barrioSeleccionadoObj) {
           this.globalError = "Debe seleccionar un barrio.";
-          // Podrías añadir una clase de error al multiselect aquí
           window.scrollTo(0, 0);
           return;
       }
@@ -745,7 +864,7 @@ export default {
 
       let signatureBase64 = null;
       this.showSignatureError = false;
-      if (this.firmaStatus) {
+      if (this.firmaStatus) { // La firma solo se procesa si firmaStatus es true
         const signatureComponent = this.$refs.firmaComponent;
         if (!signatureComponent) {
           this.globalError = "Error interno al procesar la firma. Intente recargar.";
@@ -754,7 +873,7 @@ export default {
         }
         if (signatureComponent.isEmpty()) {
           this.showSignatureError = true;
-          this.globalError = "La firma es requerida. Por favor, firme en el espacio provisto.";
+          this.globalError = "La firma es requerida ya que ha aceptado la política. Por favor, firme en el espacio provisto.";
           window.scrollTo(0, 0);
           return;
         } else {
@@ -800,9 +919,10 @@ export default {
         celular: this.celular,
         tipo_via: this.tipoVia,
         direccion: this.direccion,
-        barrio: this.barrioNombre, // Usa la propiedad computada para enviar solo el nombre
+        barrio: this.barrioNombre, 
         ciudad: this.ciudad,
-        mascota: this.mascota === "OTROS" ? this.otraMascota.toUpperCase() : this.mascota === "NO TIENE" ? null : this.mascota,
+        mascota: this.mascota,
+        otra_mascota: this.otraMascota || null,
         preferencias_email: this.preferencias.email,
         preferencias_whatsapp: this.preferencias.whatsapp,
         preferencias_sms: this.preferencias.sms,
@@ -815,8 +935,10 @@ export default {
         latitud: location.latitude,
         ip_usuario: ip,
         tipocliente: "Colaborador",
-        firma_base64: signatureBase64,
+        firma_base64: signatureBase64, // Se envía null si no se requirió/proporcionó firma
         genero: this.sexo,
+        correo_notificacion: this.correoNotificacion,
+        punto_compra: this.puntoCompra,
       };
 
       this.loading = true;
@@ -859,5 +981,7 @@ export default {
 .input-group .spinner-border {
   margin-left: 5px;
 }
-/* Ajusta estilos si es necesario */
+.multiselect-bootstrap { /* O el nombre de clase que uses para el wrapper del multiselect */
+  /* z-index: 1056; */ /* O un valor mayor que el del modal si es necesario, aunque generalmente no hace falta si el multiselect no está *dentro* del modal */
+}
 </style>
