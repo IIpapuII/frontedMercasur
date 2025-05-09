@@ -32,6 +32,7 @@
                   aria-label="Número de Documento"
                   v-model.trim="numeroDocumento"
                   @blur="checkClienteExistente"
+                  @keyup.enter="checkClienteExistente"
                   :disabled="ClienteExiste || loading || mostrarMensajeCliente" 
                   required
                   pattern="\d{8,10}"

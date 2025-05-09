@@ -7,6 +7,7 @@
     <div v-if="mostrarMensajeCliente">
       <div v-if="mensajeClienteExiste" class="alert alert-success mt-3" role="alert">
         {{ mensajeClienteExiste }}
+        <p></p>
         <button class="btn btn-sm btn-success ms-2" @click="procederConActualizacion">Sí, actualizar datos</button>
         <button class="btn btn-sm btn-secondary ms-2" @click="cancelarActualizacion">No, ingresar otro documento</button>
       </div>
@@ -32,6 +33,7 @@
                   aria-label="Número de Documento"
                   v-model.trim="numeroDocumento"
                   @blur="checkClienteExistente"
+                  @keyup.enter="checkClienteExistente"
                   :disabled="ClienteExiste || loading || mostrarMensajeCliente" 
                   required
                   pattern="\d{8,10}"

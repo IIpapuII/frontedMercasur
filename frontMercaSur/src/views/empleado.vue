@@ -211,8 +211,10 @@ onMounted(() => {
     </div>
   </nav>
 
-  <div class="container" style="width: 600px;">
-    <div v-if="!codigoValidado" class="card p-4 shadow-sm">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div v-if="!codigoValidado" class="card p-4 shadow-sm">
       <h5 class="card-title mb-3 text-center">Código de Acceso</h5>
       <div class="mb-3">
         <label for="codigoAcceso" class="form-label">Ingresa el código proporcionado:</label>
@@ -254,6 +256,9 @@ onMounted(() => {
          </button>
       </div>
     </div>
+      </div>
+    </div>
+    
   </div>
   <div  v-if="!cargando && ubicacionActiva && dentroZona">
   <empleado />
@@ -262,10 +267,7 @@ onMounted(() => {
 
 <style scoped>
 /* Estilos básicos para el contenedor y la tarjeta */
-.container {
-  margin: auto;
-  padding-top: 1rem;
-}
+
 .card {
   border: none;
 }
