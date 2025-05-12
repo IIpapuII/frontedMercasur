@@ -74,7 +74,9 @@ const solicitarUbicacion = () => {
 const obtenerZonasPermitidas = async () => {
   try {
     const response = await api.get('/zonas-permitidas/')
-    zonasPermitidas.value = response.data
+    console.log('Respuesta de la API /zonas-permitidas/:', response.data); // <-- Añade esto
+    console.log('Tipo de response.data:', typeof response.data);
+    zonasPermitidas.value = response.data.results || []
     solicitarUbicacion()
   } catch (error) {
     cargandoUbicacion.value = false

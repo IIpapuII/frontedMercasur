@@ -86,7 +86,7 @@ const obtenerZonasPermitidas = async () => {
   errorGeneral.value = 'Obteniendo información de zonas...'; // Mensaje de carga
   try {
     const response = await api.get('/zonas-permitidas/'); // Usa tu endpoint
-    zonasPermitidas.value = response.data;
+    zonasPermitidas.value = response.data.results || [];
     if (zonasPermitidas.value && zonasPermitidas.value.length > 0) {
         console.log(`DEBUG: Zonas obtenidas: ${zonasPermitidas.value.length}`);
         // Si se obtuvieron zonas, solicitar ubicación
