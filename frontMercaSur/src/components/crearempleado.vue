@@ -597,7 +597,7 @@ export default {
     async loadBarrios() {
       try {
         const response = await api.get("/barrios/");
-        this.barrios = response.data
+        this.barrios = response.data.results
           .map((barrio, index) => ({
             ...barrio,
             id: barrio.id || index
