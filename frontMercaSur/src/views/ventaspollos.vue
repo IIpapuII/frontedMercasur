@@ -2,7 +2,7 @@
     <div class="container mt-4">
       <div class="card shadow-sm mb-4">
         <div class="card-header bg-success text-white">
-          <h4 class="mb-0">Registrar Nueva Venta de Pollos</h4>
+          <h4 class="mb-0">Registrar Nueva Venta de Concesión Pollo</h4>
         </div>
         <div class="card-body">
           <form @submit.prevent="crearVenta">
@@ -46,7 +46,7 @@
   
       <div class="card shadow-sm">
         <div class="card-header bg-success text-white">
-          <h4 class="mb-0">Listado de Ventas de Pollos</h4>
+          <h4 class="mb-0">Listado de Ventas de Concesión Pollo</h4>
         </div>
         <div class="card-body">
           <div class="row g-3 mb-3 align-items-end">
