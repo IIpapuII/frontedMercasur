@@ -25,10 +25,11 @@
               </div>
               <div class="col-md-12">
                 <label for="valorVenta" class="form-label fw-semibold">Valor de Venta ($):</label>
-                <input type="text" id="valorVenta" class="form-control"
+                <input type="tel" id="valorVenta" class="form-control"
                        v-model="valorVentaInput"
                        @focus="handleValorVentaFocus"
                        @blur="handleValorVentaBlur"
+                       @input= "handleValorVentaInput"
                        required placeholder="0.00">
               </div>
             </div>
@@ -302,6 +303,20 @@
     }
   }, { immediate: true });
   
+  const handleValorVentaInput = () => {
+    // Permitir solo números y un punto decimal
+    let raw = valorVentaInput.value.replace(/[^0-9.]/g, '');
+
+    // Prevenir más de un punto decimal
+    const parts = raw.split('.');
+    if (parts.length > 2) {
+      raw = parts[0] + '.' + parts.slice(1).join('');
+    }
+
+    valorVentaInput.value = raw;
+    nuevaVenta.ValorVenta = parseFloat(raw) || 0;
+};
+
   const handleValorVentaFocus = () => {
     isValorVentaFocused.value = true;
     if (nuevaVenta.ValorVenta !== null && nuevaVenta.ValorVenta !== undefined) {
