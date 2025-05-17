@@ -36,7 +36,7 @@
                   @keyup.enter="checkClienteExistente"
                   :disabled="ClienteExiste || loading || mostrarMensajeCliente" 
                   required
-                  pattern="\d{8,10}"
+                  pattern="\d{5,10}"
                   title="Debe tener entre 8 y 10 dígitos numéricos."
                 />
                 <span v-if="loading" class="input-group-text">
