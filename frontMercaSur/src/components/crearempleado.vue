@@ -37,7 +37,7 @@
                   :disabled="ClienteExiste || loading || mostrarMensajeCliente" 
                   required
                   pattern="\d{5,10}"
-                  title="Debe tener entre 8 y 10 dígitos numéricos."
+                  title="Debe tener entre 5 y 10 dígitos numéricos."
                 />
                 <span v-if="loading" class="input-group-text">
                   <div
@@ -49,7 +49,7 @@
                 </span>
               </div>
               <div v-if="errorDocumento" class="text-danger mt-1 small">
-                El número de documento debe tener entre 8 y 10 dígitos.
+                El número de documento debe tener entre 5 y 10 dígitos.
               </div>
             </div>
           </div>
@@ -632,7 +632,7 @@ export default {
       if (!this.numeroDocumento) return true;
       const docString = this.numeroDocumento.toString();
       const longitud = docString.length;
-      this.errorDocumento = longitud < 8 || longitud > 10;
+      this.errorDocumento = longitud < 5 || longitud > 10;
       return !this.errorDocumento;
     },
     ConfirmarTrantamiento() {
