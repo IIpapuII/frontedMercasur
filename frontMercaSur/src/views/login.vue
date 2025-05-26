@@ -56,13 +56,14 @@
       const roleRedirects = {
         admin: '/admin-dashboard', // Ejemplo: si tienes un rol 'admin'
         ventaspollos: '/concesion-pollos',
+        presupuesto: '/presupuesto/reporte-cumplimiento/', // Ejemplo: si tienes un rol 'presupuesto'
         // Puedes añadir más roles y sus respectivas rutas aquí
         // cliente: '/panel-cliente',
       };
   
       // Define el orden de prioridad para la redirección si un usuario tiene múltiples roles principales
       // El primer rol en este array que el usuario posea y tenga una redirección definida, será usado.
-      const rolePriorityOrder = ['admin', 'ventaspollos', /* 'cliente', ... */];
+      const rolePriorityOrder = ['admin', 'ventaspollos', 'presupuesto'/* 'cliente', ... */];
   
       const handleLogin = async () => {
         error.value = '';
