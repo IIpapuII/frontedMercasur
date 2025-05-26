@@ -80,7 +80,7 @@
           localStorage.setItem('user_roles', JSON.stringify(userRolesArray)); 
           localStorage.setItem('username', username.value);
   
-          const sessionResponse = await api.post('/api/iniciar-sesion-django/', {}, {
+          const sessionResponse = await api.post('/iniciar-sesion-django/', {}, {
             headers: { 'Authorization': `Bearer ${access}` }
           });
   
