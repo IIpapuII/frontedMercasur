@@ -52,11 +52,14 @@
       const loading = ref(false);
       const router = useRouter();
   
-      const roleRedirectsFrontend = {
+      const roleRedirects = {
         admin:       { path: '/admin-dashboard', type: 'internal' },
         ventaspollos:  { path: '/concesion-pollos', type: 'internal' },
+        presupuesto: { path: '/presupuesto/reporte-cumplimiento/', type: 'external' }
       };
-  
+      
+      const rolePriorityOrder = ['admin', 'presupuesto', 'ventaspollos'];
+
       const handleLogin = async () => {
         error.value = '';
         loading.value = true;
@@ -80,35 +83,47 @@
           localStorage.setItem('user_roles', JSON.stringify(userRolesArray)); 
           localStorage.setItem('username', username.value);
   
-          const sessionResponse = await api.post('/iniciar-sesion-django/', {}, {
-            headers: { 'Authorization': `Bearer ${access}` }
-          });
-  
-          if (sessionResponse.data.success && sessionResponse.data.redirect_url) {
-            const finalRedirectUrl = sessionResponse.data.redirect_url;
-            let isVueRoute = false;
+          let target = { path: '/', type: 'internal' };
+          let foundRedirect = false;
 
-            for (const role in roleRedirectsFrontend) {
-                if (roleRedirectsFrontend[role].path === finalRedirectUrl && roleRedirectsFrontend[role].type === 'internal') {
-                    isVueRoute = true;
+          for (const priorityRole of rolePriorityOrder) {
+            if (userRolesArray.includes(priorityRole) && roleRedirects[priorityRole]) {
+              target = roleRedirects[priorityRole];
+              foundRedirect = true;
+              break; 
+            }
+          }
+          
+          if (!foundRedirect) {
+            for (const userRole of userRolesArray) {
+                if (roleRedirects[userRole]) {
+                    target = roleRedirects[userRole];
                     break;
                 }
             }
+          }
 
-            if (isVueRoute) {
-                await router.push(finalRedirectUrl);
+          if (target.type === 'external') {
+            const sessionResponse = await api.post('/iniciar-sesion-django/', {}, {
+              headers: { 'Authorization': `Bearer ${access}` }
+            });
+
+            if (sessionResponse.data.success) {
+              window.location.href = target.path;
             } else {
-                window.location.href = finalRedirectUrl;
+              error.value = sessionResponse.data.message || 'No se pudo iniciar la sesión en Django.';
+              loading.value = false;
+              return;
             }
           } else {
-            error.value = sessionResponse.data.message || 'No se pudo iniciar la sesión en el servidor.';
+            await router.push(target.path);
           }
   
         } catch (err) {
           if (err.response?.status === 401 && err.config.url.includes('/token/')) {
             error.value = 'Usuario o contraseña incorrectos.';
           } else if (err.response?.status === 401 && err.config.url.includes('/api/iniciar-sesion-django/')) {
-            error.value = 'Token inválido o sesión expirada. Intenta de nuevo.';
+            error.value = 'Token inválido o sesión expirada al intentar crear sesión Django.';
           } else if (err.response?.data?.detail) {
             error.value = err.response.data.detail;
           } else {
@@ -146,3 +161,4 @@
     border-width: 0.2em;
   }
   </style>
+
