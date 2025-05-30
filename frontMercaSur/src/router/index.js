@@ -5,6 +5,7 @@ import empresas from '../views/empresas.vue'
 import NotFound from '../views/NotFound.vue'
 import Login from '../views/login.vue'
 import concesion from '../views/ventaspollos.vue'
+import clienteFormato from '../views/formatoCliente.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,6 +24,11 @@ const router = createRouter({
       path: '/empresas',
       name: 'empresas',
       component: empresas
+    },
+    {
+      path: '/formato-cliente',
+      name: 'clienteFormato',
+      component: clienteFormato
     },
     {
       path: '/:pathMatch(.*)*',
