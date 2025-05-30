@@ -891,7 +891,7 @@ export default {
         longitud: location.longitude,
         latitud: location.latitude,
         ip_usuario: ip,
-        tipocliente: "",
+        tipocliente: "Cliente",
         firma_base64: "",
         genero: this.sexo,
         correo_notificacion: false,
