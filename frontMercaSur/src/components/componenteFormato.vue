@@ -194,7 +194,7 @@
                   id="direccion"
                   v-model="direccion"
                   @input="convertToUppercase('direccion')"
-                  placeholder="Ej: CL 45B # 23-10"
+                  placeholder="Ej: 45B # 23-10"
                   required
                 />
               </div>
