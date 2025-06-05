@@ -1,9 +1,10 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import api from '@/services/api.js'
 import clienteFormato from '@/components/componenteFormato.vue'
+import empresaFormato from '@/components/formatoempresa.vue'
 
-// Estados
+// Estados de ubicación
 const ubicacionActiva = ref(false)
 const cargandoUbicacion = ref(true)
 const errorUbicacion = ref('')
@@ -12,23 +13,32 @@ const latitud = ref(null)
 const longitud = ref(null)
 const zonasPermitidas = ref([])
 
-// Función para calcular distancia entre dos puntos en la Tierra
+// Estado de selección
+const tipoRegistro = ref('') // 'cliente' o 'empresa'
+
+// Título dinámico
+const tituloRegistro = computed(() => {
+  if (tipoRegistro.value === 'cliente') return 'Registro de Cliente por Formato'
+  if (tipoRegistro.value === 'empresa') return 'Registro de Empresa por Formato'
+  return 'Registro por Formato'
+})
+
+// Función para calcular distancia entre dos puntos
 function calcularDistancia(lat1, lon1, lat2, lon2) {
-  const R = 6371e3 // radio de la Tierra en metros
+  const R = 6371e3
   const φ1 = lat1 * Math.PI / 180
   const φ2 = lat2 * Math.PI / 180
   const Δφ = (lat2 - lat1) * Math.PI / 180
   const Δλ = (lon2 - lon1) * Math.PI / 180
 
-  const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+  const a = Math.sin(Δφ / 2) ** 2 +
             Math.cos(φ1) * Math.cos(φ2) *
-            Math.sin(Δλ / 2) * Math.sin(Δλ / 2)
+            Math.sin(Δλ / 2) ** 2
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
 
-  return R * c // en metros
+  return R * c
 }
 
-// Verifica si la ubicación actual está dentro de alguna zona permitida
 function verificarZonasPermitidas() {
   dentroZona.value = zonasPermitidas.value.some((zona) => {
     const distancia = calcularDistancia(
@@ -37,7 +47,6 @@ function verificarZonasPermitidas() {
       zona.latitude,
       zona.longitude
     )
-    console.log(`Distancia a zona ${zona.id}: ${distancia} m (máx: ${zona.max_distance}) lat: ${zona.latitude} lng: ${zona.longitude}`)
     return distancia <= zona.max_distance
   })
 
@@ -46,7 +55,6 @@ function verificarZonasPermitidas() {
   }
 }
 
-// Solicita la ubicación del usuario
 const solicitarUbicacion = () => {
   cargandoUbicacion.value = true
   navigator.geolocation.getCurrentPosition(
@@ -55,7 +63,6 @@ const solicitarUbicacion = () => {
       longitud.value = pos.coords.longitude
       ubicacionActiva.value = true
       cargandoUbicacion.value = false
-      console.log(`Ubicación obtenida: ${latitud.value}, ${longitud.value}`)
       verificarZonasPermitidas()
     },
     (err) => {
@@ -67,7 +74,6 @@ const solicitarUbicacion = () => {
   )
 }
 
-// Carga las zonas permitidas desde la API
 const obtenerZonasPermitidas = async () => {
   try {
     const response = await api.get('/zonas-permitidas/')
@@ -96,7 +102,7 @@ onMounted(() => {
       <a class="navbar-brand" href="#">
         <img alt="mercasur logo" src="@/assets/logo.svg" width="200" class="d-inline-block align-text-top">
       </a>
-      <h2>Registro de Cliente por formato</h2>
+      <h2>{{ tituloRegistro }}</h2>
     </div>
   </nav>
 
@@ -112,7 +118,21 @@ onMounted(() => {
       Activar ubicación
     </button>
   </div>
-  <div v-if="ubicacionActiva && dentroZona">
+
+  <!-- Selección de tipo de registro -->
+  <div v-if="ubicacionActiva && dentroZona && !tipoRegistro" class="text-center my-4">
+    <h4>Seleccione el tipo de registro</h4>
+    <div class="d-flex justify-content-center gap-3 my-3">
+      <button class="btn btn-success" @click="tipoRegistro = 'cliente'">Registrar Cliente</button>
+      <button class="btn btn-secondary" @click="tipoRegistro = 'empresa'">Registrar Empresa</button>
+    </div>
+  </div>
+
+  <!-- Componente según el tipo seleccionado -->
+  <div v-if="tipoRegistro === 'cliente'">
     <clienteFormato />
+  </div>
+  <div v-if="tipoRegistro === 'empresa'">
+    <empresaFormato />
   </div>
 </template>

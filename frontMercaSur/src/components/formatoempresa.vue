@@ -109,33 +109,7 @@
                   :disabled="ClienteExiste "
                 />
               </div>
-              <div class="col-md-3">
-                <label for="fecha-nacimiento" class="form-label"
-                  >Fecha Nacimiento</label
-                >
-                <input
-                  type="date"
-                  id="fecha-nacimiento"
-                  class="form-control"
-                  v-model="fechaNacimiento"
-                  @change="validateAge"
-                  :disabled="ClienteExiste"
-                  required
-                />
-                <div v-if="errorFechaNacimiento" class="text-danger mt-1 small">
-                  Debes tener al menos 18 años.
-                </div>
-              </div>
-              <div class="col-md-3">
-                <label for="sexo" class="form-label">Genero</label>
-                <select class="form-select" v-model="sexo" id="sexo" :disabled="ClienteExiste && !permitirActualizacionDatos" required>
-                  <option disabled value="">Selecciona una opción</option>
-                  <option value="MUJER">Mujer</option>
-                  <option value="HOMBRE">Hombre</option>
-                  <option value="NO APLICA">No Aplica</option>
-                </select>
-              </div>
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label for="correo" class="form-label"
                   >Correo Electrónico</label
                 >
@@ -148,10 +122,7 @@
                   required
                 />
               </div>
-            </div>
-
-            <div class="row mt-3 g-3">
-              <div class="col-md-6">
+                            <div class="col-md-4">
                 <label for="celular" class="form-label">Celular</label>
                 <input
                   type="number"
@@ -162,7 +133,7 @@
                   required
                 />
               </div>
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <label for="telefono" class="form-label"
                   >Teléfono (Opcional)</label
                 >
@@ -174,6 +145,9 @@
                   v-model="telefono"
                 />
               </div>
+            </div>
+
+            <div class="row mt-3 g-3">
               <div class="col-md-2">
                 <label for="tipo_via" class="form-label">Tipo de vía</label>
                 <select
@@ -194,7 +168,7 @@
                   id="direccion"
                   v-model="direccion"
                   @input="convertToUppercase('direccion')"
-                  placeholder="Ej: CL 45B # 23-10"
+                  placeholder="Ej: 45B # 23-10"
                   required
                 />
               </div>
@@ -249,37 +223,7 @@
             </div>
 
             <div class="row mt-3 g-3">
-              <div class="col-md-4">
-                <label for="mascota" class="form-label">¿Tienes mascota?</label>
-                <select
-                  class="form-select"
-                  v-model="mascota"
-                  id="mascota"
-                  required
-                >
-                  <option selected disabled value="">
-                    Selecciona una opción
-                  </option>
-                  <option value="PERRO">Perro</option>
-                  <option value="GATO">Gato</option>
-                  <option value="OTROS">Otro</option>
-                  <option value="NO TIENE">Ninguna</option>
-                </select>
-                <div class="mt-2" v-if="mascota === 'OTROS'">
-                  <label for="otra-mascota" class="form-label"
-                    >¿Qué mascota tienes?</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="otraMascota"
-                    placeholder="Especifica tu mascota"
-                    id="otra-mascota"
-                    @input="convertToUppercase('otraMascota')"
-                  />
-                </div>
-              </div>
-              <div class="col-md-4">
+              <div class="col">
                 <label class="form-label d-block mb-2"
                   >¿Cómo prefieres recibir información?</label
                 >
@@ -351,24 +295,10 @@
                 </small>
                 </div>
               </div>
-
-                <div class="col-md-4">
-                  <div class="form-check">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      id="notificacionCorreoCheck"
-                      v-model="correoNotificacion"
-                    />
-                    <label class="form-check-label" for="notificacionCorreoCheck">
-                      ¿Deseas recibir un correo electrónico de confirmación sobre tu registro en nuestra base de datos?
-                    </label>
-                  </div>
-                </div>
               
             </div>
 
-            <div class="row mt-3 align-items-center">
+            <div class="row mt-4 align-items-center">
               <div class="col-md-6">
                 <div class="form-check">
                   <input
@@ -394,13 +324,7 @@
                   aceptarla para poder registrarte .
                 </small>
               </div>
-              <div class="col-md-6" v-if="firmaStatus">
-                <label class="form-label d-block">Firma:</label>
-                <SignaturePad ref="firmaComponent" />
-                <div v-if="showSignatureError" class="text-danger mt-1 small">
-                  Por favor, proporcione su firma.
-                </div>
-              </div>
+
             </div>
 
             <div class="row mt-4">
@@ -452,27 +376,8 @@
               @click="politicaState"
             ></button>
           </div>
-          <div class="modal-header" v-if="tarjeta">
-            <h1 class="modal-title fs-5" id="fidelizacionModalLabel">
-              Confirmar Fidelización
-            </h1>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-              @click="cancelarFidelizacion"
-            ></button>
-          </div>
-
           <div class="modal-body">
             <tratamiento v-if="!tarjeta" />
-            <div v-if="tarjeta">
-              <p>
-                ¿Te gustaría unirte a nuestro programa de fidelización para
-                acumular puntos y disfrutar de beneficios exclusivos?
-              </p>
-            </div>
           </div>
 
           <div class="modal-footer">
@@ -488,27 +393,10 @@
               <button
                 type="button"
                 class="btn btn-success"
+                data-bs-dismiss="modal"
                 @click="ConfirmarTrantamiento"
               >
                 Acepto y Confirmo Tratamiento
-              </button>
-            </div>
-            <div v-if="tarjeta">
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-                @click="cancelarFidelizacion"
-              >
-                No, gracias
-              </button>
-              <button
-                type="button"
-                class="btn btn-success"
-                data-bs-dismiss="modal"
-                @click="ConfirmarFidelizacion"
-              >
-                ¡Sí, quiero unirme!
               </button>
             </div>
           </div>
@@ -520,16 +408,14 @@
 
 <script>
 import axios from "axios";
-import SignaturePad from "./signatured.vue";
 import tratamiento from "./tratamiento.vue";
 import tipo_via from "./tipovia.vue";
 import api from "@/services/api.js";
 import Multiselect from 'vue-multiselect';
 import 'vue-multiselect/dist/vue-multiselect.css';
-
+import {Modal} from 'bootstrap'; 
 export default {
   components: {
-    SignaturePad,
     tratamiento,
     tipo_via,
     Multiselect,
@@ -570,7 +456,6 @@ export default {
       loading: false,
       errorFechaNacimiento: false,
       errorDocumento: false,
-      showSignatureError: false,
       globalError: null,
       barrios: [],
       correoNotificacion: false,
@@ -588,7 +473,6 @@ export default {
       barrioNombre() {
           return this.barrioSeleccionadoObj ? this.barrioSeleccionadoObj.nombre : null;
       }
-
   },
   mounted() {
     this.loadBarrios();
@@ -615,18 +499,6 @@ export default {
         this[field] = this[field].toUpperCase();
       }
     },
-    validateAge() {
-      this.errorFechaNacimiento = false;
-      if (!this.fechaNacimiento) return;
-      const birthDate = new Date(this.fechaNacimiento);
-      const today = new Date();
-      let age = today.getFullYear() - birthDate.getFullYear();
-      const month = today.getMonth() - birthDate.getMonth();
-      if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
-        age--;
-      }
-      this.errorFechaNacimiento = age < 18;
-    },
     validateDocument() {
       this.errorDocumento = false;
       if (!this.numeroDocumento) return true;
@@ -637,45 +509,17 @@ export default {
     },
     ConfirmarTrantamiento() {
       this.politica = true;
-      this.tarjeta = true; 
       if (this.ClienteExiste && !this.permitirActualizacionDatos) { // Si el cliente existe pero no ha confirmado actualizar, no activar firma aún
           this.firmaStatus = false;
       } else {
           this.firmaStatus = true; // Activar firma para nuevos o para actualización confirmada
       }
-    },
-    ConfirmarFidelizacion() {
-      this.fidelizacion = true;
-      this.tarjeta = false;
       this.hidePolicyModal();
     },
     politicaState() {
       this.politica = false;
       this.firmaStatus = false;
-      this.tarjeta = false;
     },
-    cancelarFidelizacion() {
-      this.fidelizacion = false;
-      this.tarjeta = false;
-      this.hidePolicyModal();
-    },
-    hidePolicyModal() {
-      const modalElement = this.$refs.policyModalRef;
-      if (modalElement) {
-        try {
-          const modalInstance = bootstrap.Modal.getInstance(modalElement);
-          if (modalInstance) {
-            modalInstance.hide();
-          } else {
-            const newModalInstance = new bootstrap.Modal(modalElement);
-            newModalInstance.hide();
-          }
-        } catch (e) {
-          console.error("Error al intentar cerrar el modal:", e);
-        }
-      }
-    },
-
     async checkClienteExistente() {
       if (!this.validateDocument()) return;
       this.loading = true;
@@ -695,11 +539,11 @@ export default {
         });
         if (response.data.existe) {
           this.clienteDataTemporal = response.data.cliente;
-          this.mensajeClienteExiste = `El cliente con documento ${this.numeroDocumento} ya existe en nuestra base de datos. ¿Desea actualizar la información?`;
+          this.mensajeClienteExiste = `La empresa con documento ${this.numeroDocumento} ya existe en nuestra base de datos. ¿Desea actualizar la información?`;
           this.mostrarMensajeCliente = true;
           // No activar el formulario ni marcar ClienteExiste todavía. Esperar confirmación.
         } else {
-          this.mensajeClienteNoExiste = `El cliente con documento ${this.numeroDocumento} no fue encontrado. Se habilitará el formulario para que pueda registrarse.`;
+          this.mensajeClienteNoExiste = `La empresa con documento ${this.numeroDocumento} no fue encontrado. Se habilitará el formulario para que pueda registrarse.`;
           this.mostrarMensajeCliente = true;
           this.resetPartialForm(); // Limpia datos previos por si acaso
           this.ClienteExiste = false;
@@ -818,7 +662,6 @@ export default {
       this.firmaStatus = false;
       this.errorDocumento = false;
       this.errorFechaNacimiento = false;
-      this.showSignatureError = false;
       this.globalError = null;
       if (this.$refs.firmaComponent) {
         this.$refs.firmaComponent.clearCanvas();
@@ -834,12 +677,6 @@ export default {
     },
     async handleSubmit() {
       this.globalError = null;
-      this.validateAge();
-      if (this.errorFechaNacimiento) {
-        this.globalError = "Debe ser mayor de 18 años para registrarse.";
-        window.scrollTo(0, 0);
-        return;
-      }
       if (!this.validateDocument()) {
         this.globalError = "El número de documento no es válido.";
         window.scrollTo(0, 0);
@@ -868,30 +705,6 @@ export default {
       }
 
 
-      let signatureBase64 = null;
-      this.showSignatureError = false;
-      if (this.firmaStatus) { // La firma solo se procesa si firmaStatus es true
-        const signatureComponent = this.$refs.firmaComponent;
-        if (!signatureComponent) {
-          this.globalError = "Error interno al procesar la firma. Intente recargar.";
-          window.scrollTo(0, 0);
-          return;
-        }
-        if (signatureComponent.isEmpty()) {
-          this.showSignatureError = true;
-          this.globalError = "La firma es requerida ya que ha aceptado la política. Por favor, firme en el espacio provisto.";
-          window.scrollTo(0, 0);
-          return;
-        } else {
-          signatureBase64 = signatureComponent.getSignatureBase64();
-          if (!signatureBase64) {
-            this.globalError = "Ocurrió un error al procesar la firma. Intente firmar de nuevo.";
-            window.scrollTo(0, 0);
-            return;
-          }
-        }
-      }
-
       let ip = null;
       let location = { latitude: null, longitude: null };
       try {
@@ -919,7 +732,7 @@ export default {
         primer_nombre: this.primerNombre,
         segundo_nombre: this.segundoNombre || null,
         numero_documento: this.numeroDocumento,
-        fecha_nacimiento: this.fechaNacimiento,
+        fecha_nacimiento: new Date().toISOString().split('T')[0],
         correo: this.correo,
         telefono: this.telefono || null,
         celular: this.celular,
@@ -935,16 +748,17 @@ export default {
         preferencias_redes_sociales: this.preferencias.redesSociales,
         preferencias_llamada: this.preferencias.llamada,
         preferencias_ninguna: this.preferencias.ninguna,
-        fidelizacion: this.fidelizacion,
+        fidelizacion: false,
         acepto_politica: this.politica,
         longitud: location.longitude,
         latitud: location.latitude,
         ip_usuario: ip,
-        tipocliente: "Cliente",
-        firma_base64: signatureBase64, // Se envía null si no se requirió/proporcionó firma
+        tipocliente: "Empresa",
+        firma_base64: "",
         genero: this.sexo,
-        correo_notificacion: this.correoNotificacion,
+        correo_notificacion: false,
         punto_compra: this.puntoCompra,
+        creado_desde_fisico: true, // Asumimos que es un registro físico
       };
 
       this.loading = true;

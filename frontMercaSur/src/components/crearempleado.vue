@@ -199,17 +199,7 @@
                   required
                 />
               </div>
-              <div class="col-md-5">
-                <label for="punto_compra" class="form-label">Indique, por favor, el punto de compra de su preferencia:</label>
-                <select id="punto_compra" name="punto_compra" class="form-select" v-model="puntoCompra" required>
-                    <option value="">Seleccione una opción</option>
-                    <option value="CALDAS">CALDAS</option>
-                    <option value="CENTRO">CENTRO</option>
-                    <option value="SOTOMAYOR">SOTOMAYOR</option>
-                    <option value="CABECERA">CABECERA</option>
-                </select>
-              </div>
-              <div class="col-md-6">
+                <div class="col-md-5">
                  <label for="barrio-multiselect" class="form-label">Barrio</label>
                  <multiselect
                    id="barrio-multiselect"
@@ -246,6 +236,16 @@
                 <datalist id="datalistOptions">
                   <option v-for="c in ciudades" :key="c" :value="c"></option>
                 </datalist>
+              </div>
+               <div class="col-md-5">
+                <label for="punto_compra" class="form-label">Indique, por favor, el punto de compra de su preferencia:</label>
+                <select id="punto_compra" name="punto_compra" class="form-select" v-model="puntoCompra" required>
+                    <option value="">Seleccione una opción</option>
+                    <option value="CALDAS">CALDAS</option>
+                    <option value="CENTRO">CENTRO</option>
+                    <option value="SOTOMAYOR">SOTOMAYOR</option>
+                    <option value="CABECERA">CABECERA</option>
+                </select>
               </div>
             </div>
 
