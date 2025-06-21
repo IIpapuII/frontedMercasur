@@ -466,13 +466,21 @@
             ></button>
           </div>
 
-          <div class="modal-body">
+          <div class="modal-body ">
             <tratamiento v-if="!tarjeta" />
-            <div v-if="tarjeta">
-              <p>
-                ¿Te gustaría unirte a nuestro programa de fidelización para
-                acumular puntos y disfrutar de beneficios exclusivos?
-              </p>
+            
+            <div v-else class="text-center">
+              <h2 class="mb-3 text-success fs-2">
+              ¡Activa tu Tarjeta de Puntos!
+            </h2>
+            <p class="mb-2 fs-5">
+              Acumula puntos y recibe recompensas cada vez que compras. 
+            </p>
+            <div class="d-flex justify-content-center gap-3 mb-3">
+              <span class="badge bg-success p-2 fs-5">Puntos</span>
+              <span class="badge bg-success p-2 fs-5">Descuentos</span>
+            </div>
+            <p class="fw-bold fs-5">¿Te unes hoy?</p>
             </div>
           </div>
 
@@ -989,5 +997,9 @@ export default {
 }
 .multiselect-bootstrap { /* O el nombre de clase que uses para el wrapper del multiselect */
   /* z-index: 1056; */ /* O un valor mayor que el del modal si es necesario, aunque generalmente no hace falta si el multiselect no está *dentro* del modal */
+}
+
+.form-check-input {
+  border: 2px solid #177348 !important; /* Borde más grueso y negro */
 }
 </style>
