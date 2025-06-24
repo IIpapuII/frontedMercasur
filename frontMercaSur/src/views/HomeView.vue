@@ -1,7 +1,8 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import api from '@/services/api.js'
 import crearcliente from '@/components/crearcliente.vue'
+import empresa from '@/components/CrearEmpresas.vue'
 import '@/assets/facebook.png'
 import '@/assets/instagram.png'
 import '@/assets/logo.png'
@@ -14,6 +15,15 @@ const dentroZona = ref(false)
 const latitud = ref(null)
 const longitud = ref(null)
 const zonasPermitidas = ref([])
+// Estado de selección
+const tipoRegistro = ref('') // 'cliente' o 'empresa'
+
+// Título dinámico
+const tituloRegistro = computed(() => {
+  if (tipoRegistro.value === 'cliente') return 'Registro de Cliente'
+  if (tipoRegistro.value === 'empresa') return 'Registro de Empresa'
+  return 'Sistema de Registro'
+})
 
 // Función para calcular distancia entre dos puntos en la Tierra
 function calcularDistancia(lat1, lon1, lat2, lon2) {
@@ -40,7 +50,6 @@ function verificarZonasPermitidas() {
       zona.latitude,
       zona.longitude
     )
-    console.log(`Distancia a zona ${zona.id}: ${distancia} m (máx: ${zona.max_distance}) lat: ${zona.latitude} lng: ${zona.longitude}`)
     return distancia <= zona.max_distance
   })
 
@@ -101,7 +110,7 @@ onMounted(() => {
       <a class="navbar-brand" href="#">
         <img alt="mercasur logo" src="@/assets/logo.svg" width="200" class="d-inline-block align-text-top">
       </a>
-      <h2>Registro de cliente</h2>
+      <h2>{{ tituloRegistro }}</h2>
     </div>
   </nav>
 
@@ -118,8 +127,25 @@ onMounted(() => {
     </button>
   </div>
 
-  <!-- Mostrar componente solo si ubicación válida y dentro de la zona -->
-  <div v-if="ubicacionActiva && dentroZona">
+  <!-- Selección de tipo de registro -->
+  <div v-if="ubicacionActiva && dentroZona && !tipoRegistro" class="text-center my-4">
+    <h4>Seleccione el tipo de registro que desea realizar</h4>
+    <p class="text-muted mb-3">Elija la opción que corresponda a su tipo de relación con mercasur</p>
+    <div class="d-flex justify-content-center gap-3 my-3">
+      <button class="btn btn-success btn-lg" @click="tipoRegistro = 'cliente'">
+        <i class="bi bi-person-plus"></i> Registrarte como cliente
+      </button>
+      <button class="btn btn-secondary btn-lg" @click="tipoRegistro = 'empresa'">
+        <i class="bi bi-building"></i> Registrarte como empresa
+      </button>
+    </div>
+  </div>
+
+  <!-- Componente según el tipo seleccionado -->
+  <div v-if="tipoRegistro === 'cliente'">
     <crearcliente />
+  </div>
+  <div v-if="tipoRegistro === 'empresa'">
+    <empresa />
   </div>
 </template>

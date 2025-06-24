@@ -995,9 +995,6 @@ export default {
 .input-group .spinner-border {
   margin-left: 5px;
 }
-.multiselect-bootstrap { /* O el nombre de clase que uses para el wrapper del multiselect */
-  /* z-index: 1056; */ /* O un valor mayor que el del modal si es necesario, aunque generalmente no hace falta si el multiselect no está *dentro* del modal */
-}
 .form-check-input {
   border: 2px solid #177348 !important; /* Borde más grueso y negro */
 }
