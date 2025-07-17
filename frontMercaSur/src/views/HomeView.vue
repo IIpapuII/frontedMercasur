@@ -133,10 +133,10 @@ onMounted(() => {
     <p class="text-muted mb-3">Elija la opción que corresponda a su tipo de relación con mercasur</p>
     <div class="d-flex justify-content-center gap-3 my-3">
       <button class="btn btn-success btn-lg" @click="tipoRegistro = 'cliente'">
-        <i class="bi bi-person-plus"></i> Registrarte como cliente
+        <i class="bi bi-person-plus"></i> Persona natural
       </button>
       <button class="btn btn-secondary btn-lg" @click="tipoRegistro = 'empresa'">
-        <i class="bi bi-building"></i> Registrarte como empresa
+        <i class="bi bi-building"></i> Empresa / Persona jurídica
       </button>
     </div>
   </div>
