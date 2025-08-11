@@ -1,14 +1,26 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="es">
   <head>
-    <meta charset="UTF-8">
-    <link rel="icon" href="/icons/icon-192x192.png" type="image/png">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mercasur</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Mercasur</title>
+
+    <!-- PWA Android -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#2ca646" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="Mercasur" />
+    <link rel="icon" type="image/png" href="/icons/icon-192x192.png" />
+
+    <!-- PWA iOS -->
+    <!-- iOS NO usa los íconos del manifest: necesita su propio apple-touch-icon -->
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon-180.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Mercasur" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   </head>
   <body>
-    <div id="app" class="container">
-    </div>
+    <div id="app" class="container"></div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
