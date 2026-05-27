@@ -408,6 +408,7 @@
 
 <script>
 import axios from "axios";
+import Swal from "sweetalert2";
 import tratamiento from "./tratamiento.vue";
 import tipo_via from "./tipovia.vue";
 import api from "@/services/api.js";
@@ -762,18 +763,37 @@ export default {
       };
 
       this.loading = true;
+      Swal.fire({
+        title: 'Procesando...',
+        text: 'Por favor, espere',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
       try {
         let response;
         const apiUrl = "/clientes/";
         if (this.ClienteExiste) {
           response = await api.put(`${apiUrl}${this.numeroDocumento}/`, clienteData);
-          alert("Datos actualizados correctamente.");
+          Swal.fire({
+            title: '¡Éxito!',
+            text: 'Datos actualizados correctamente.',
+            icon: 'success',
+            confirmButtonColor: '#198754'
+          });
         } else {
           response = await api.post(apiUrl, clienteData);
-          alert("Cliente registrado exitosamente.");
+          Swal.fire({
+            title: '¡Éxito!',
+            text: 'Empresa registrada exitosamente.',
+            icon: 'success',
+            confirmButtonColor: '#198754'
+          });
         }
         this.resetForm();
       } catch (error) {
+        Swal.close();
         console.error("Error al guardar los datos:", error);
         this.globalError = "Ocurrió un error al guardar los datos.";
         if (error.response && error.response.data) {

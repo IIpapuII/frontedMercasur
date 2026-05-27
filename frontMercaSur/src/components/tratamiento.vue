@@ -1,6 +1,6 @@
 <template>
                         <p>Mediante el presente documento manifiesto que he sido informado por el GRUPO FEXVAD S.A.S., identificado con el NIT: 900.448.115-7, ubicado en la dirección carrera 33 # 106 - 17 - 21 Barrio 
-                        Caldas con número telefónico: (607)7000070 de lo siguiente:
+                        Caldas con número telefónico: (607)7000070 de lo siguiente:</p>
                     <ul>
                         <li>
                             FEXVAD S.A.S. es responsable del tratamiento de datos personales captados o recolectados por la actividad comercial de la sociedad a través de cualquiera de los
@@ -17,7 +17,6 @@
                             Mis derechos como titular de los datos son:
                         </li>
                     </ul>
-                    </p>
                     <ol>
                         <li>
                             Conocer, actualizar y rectificar sus datos personales frente a los responsables del Tratamiento o Encargados del Tratamiento. Este derecho se podrá ejercer, entre otros frente a datos
